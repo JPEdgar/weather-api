@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 // libraries
 import axios from "axios";
+import Zip from "react-zipcode";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 export default function Weather() {
@@ -13,20 +14,27 @@ export default function Weather() {
    const [weather, setWeather] = useState(null);
    const [zip, setZip] = useState(99801);
 
-   useEffect(() => {
-      getWeather();
-   }, []);
+   const [testData, setTestData] = useState(false);
+   //    useEffect(() => {
+   //       getWeather();
+   //    }, []);
 
-   useEffect(() => {
-      console.log(weather);
-   }, [weather]);
+   //    useEffect(() => {
+   //       console.log(weather);
+   //    }, [weather]);
 
    const getWeather = async () => {
       try {
-         const weatherInfo = localStorage.getItem("weatherInfo");
-         const readableWeather = JSON.parse(weatherInfo);
-         setWeather(readableWeather.data.data[0]);
-         //    const response = await axios.get( `${apiLoc}?postal_code=${zip}&key=${key}&include=${inc}&lang=${lang}&units=${units}` );
+         if (testData) {
+            const weatherInfo = localStorage.getItem("weatherInfo");
+            const readableWeather = JSON.parse(weatherInfo);
+            setWeather(readableWeather.data.data[0]);
+         } else {
+            const response = await axios.get(
+               `${apiLoc}?postal_code=${zip}&key=${key}&include=${inc}&lang=${lang}&units=${units}`
+            );
+            setWeather(response.data.data[0])
+         }
          //   console.log(response);
          //   localStorage.setItem("weatherInfo", JSON.stringify(response))
       } catch (error) {
@@ -36,25 +44,29 @@ export default function Weather() {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      console.log(zip);
+      getWeather();
    };
 
-   const handleZip = (e) => {
-      setZip(e.target.value);
+   const handleZip = (value) => {
+      setZip(parseInt(value));
    };
 
+   const toggleTest = () => {
+       setTestData(curr => !curr)
+   }
    return (
       <>
+      <Button size="sm" variant="success" onClick={toggleTest}>{`Toggle Test => ${testData}`}</Button>
          <Form onSubmit={(e) => handleSubmit(e)}>
             <Form.Group as={Row} controlId="formZipCode">
                <Col xs={4}>
                   <Form.Label>Enter Zipcode</Form.Label>
                </Col>
                <Col xs={5}>
-                  <Form.Control
-                     type="text"
-                     plaseholder="Enter Zipcode"
-                     onChange={(e) => handleZip(e)}
+                  <Zip
+                     placeholder="xxxxx"
+                     //  onChange={(e) => handleZip(e)}
+                     onValue={(value) => handleZip(value)}
                      value={zip}
                   />
                </Col>
@@ -65,12 +77,16 @@ export default function Weather() {
          </Form>
          {weather && (
             <>
-               <p> Location: {weather.city_name}, {weather.state_code} </p>
+               <p>
+                  Location: {weather.city_name}, {weather.state_code}{" "}
+               </p>
                <p>{weather.temp}°F</p>
                <p>{weather.weather.description}</p>
                <p>Sunrise: {weather.sunrise}</p>
                <p>Sunset: {weather.sunset}</p>
-               <p>Wind: {weather.wind_cdir} at {weather.wind_spd} mph </p>
+               <p>
+                  Wind: {weather.wind_cdir} at {weather.wind_spd} mph{" "}
+               </p>
             </>
          )}
       </>
