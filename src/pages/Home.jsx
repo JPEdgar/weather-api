@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 
 // custom
-import Weather from "../components/Weather"
+import Weather from "../components/Weather";
 
 export default function Home() {
-    return (
-        <>
-         <Weather />   
-        </>
-    )
+   return (
+      <>
+         <Weather />
+      </>
+   );
 }

@@ -5,6 +5,7 @@ import { Container, Button } from "react-bootstrap";
 
 // styles
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/styles.css"
 
 // custom
 import Home from "./pages/Home";
@@ -22,6 +23,7 @@ export default function App() {
          <Button size="sm" className="mb-3" onClick={toggleShow}>
             Toggle Show
          </Button>
+         <hr />
          {show ? <Home /> : <About />}
       </Container>
    );
