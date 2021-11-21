@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // libraries
-import {
-   Modal,
-   Button,
-   InputGroup,
-   FormControl,
-   Form,
-   Row,
-   Col,
-} from "react-bootstrap";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 
 // custom components
 import UnitSettings from "./UnitSettings";
@@ -27,21 +19,19 @@ export default function Settings({
    setSettings,
    weatherSettings,
    setWeatherSettings,
+   getWeather,
 }) {
    const [tempSettings, setTempSettings] = useState(settings);
 
    const handleClose = () => setWeatherSettings(false);
+
    const handleSubmit = (e) => {
       e.preventDefault();
-        setSettings(tempSettings);
-        setWeatherSettings(false);
-      console.log("tempSettings = ", tempSettings);
+      setSettings(tempSettings);
+      setWeatherSettings(false);
+      getWeather();
    };
 
-   useEffect(() => {
-      console.log("tempSettings = ", tempSettings)
-   }, [tempSettings])
-   
    return (
       <div>
          <Modal show={weatherSettings} onHide={handleClose}>
@@ -55,9 +45,27 @@ export default function Settings({
                         Unit
                      </Form.Label>
                      <Col sm={10}>
-                        <UnitSettings id={1} label="Metric" value="M" tempSettings={tempSettings} setTempSettings={setTempSettings} />
-                        <UnitSettings id={2} label="Scientific" value="S" tempSettings={tempSettings} setTempSettings={setTempSettings} />
-                        <UnitSettings id={3} label="Fahrenheit" value="I" tempSettings={tempSettings} setTempSettings={setTempSettings} />
+                        <UnitSettings
+                           id={1}
+                           label="Metric"
+                           value="M"
+                           tempSettings={tempSettings}
+                           setTempSettings={setTempSettings}
+                        />
+                        <UnitSettings
+                           id={2}
+                           label="Scientific"
+                           value="S"
+                           tempSettings={tempSettings}
+                           setTempSettings={setTempSettings}
+                        />
+                        <UnitSettings
+                           id={3}
+                           label="Fahrenheit"
+                           value="I"
+                           tempSettings={tempSettings}
+                           setTempSettings={setTempSettings}
+                        />
                      </Col>
                   </Form.Group>
                </Modal.Body>

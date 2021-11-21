@@ -11,9 +11,9 @@ import Settings from "./Settings";
 export default function Weather() {
    const apiLoc = "http://api.weatherbit.io/v2.0/current";
    const key = "5920c568fb6643ca908dc37155c3a908";
-   const lang = "en";
-   const units = "I";
-   const inc = "minutely";
+   // const lang = "en";
+   // const units = "I";
+   // const inc = "minutely";
    const [weather, setWeather] = useState(null);
    const [zip, setZip] = useState(99801);
    const [testData, setTestData] = useState(true);
@@ -32,8 +32,9 @@ export default function Weather() {
    }, [weather]);
 
    useEffect(() => {
-      console.log("settings = ", settings)
-   }, [settings])
+      // console.log("settings = ", settings)
+      getWeather();
+   }, [settings]);
 
    const getWeather = async () => {
       try {
@@ -66,6 +67,7 @@ export default function Weather() {
    const toggleTest = () => {
       setTestData((curr) => !curr);
    };
+
    return (
       <>
          <Button
@@ -73,7 +75,11 @@ export default function Weather() {
             variant="warning"
             onClick={toggleTest}
          >{`Toggle Test => ${testData}`}</Button>
-         <Button size="sm" variant="success" onClick={() => setWeatherSettings(true)}>
+         <Button
+            size="sm"
+            variant="success"
+            onClick={() => setWeatherSettings(true)}
+         >
             Settings
          </Button>
          <hr />
@@ -101,6 +107,7 @@ export default function Weather() {
                setWeatherSettings={setWeatherSettings}
                settings={settings}
                setSettings={setSettings}
+               getWeather={getWeather}
             />
          )}
 
@@ -109,7 +116,9 @@ export default function Weather() {
                <p>
                   Location: {weather.city_name}, {weather.state_code}{" "}
                </p>
-               <p>{weather.temp}°F</p>
+               {settings.units === "I" && <p>{weather.temp}°F</p>}
+               {settings.units === "S" && <p>{weather.temp}°K</p>}
+               {settings.units === "M" && <p>{weather.temp}°C</p>}
                <p>{weather.weather.description}</p>
                {/* 
                <p>I think this weather API is incorrect on the sunrise/sunset</p> 

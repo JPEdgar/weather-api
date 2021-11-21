@@ -10,14 +10,9 @@ export default function UnitSettings({
    tempSettings,
    setTempSettings,
 }) {
-   let type = "";
    let isDefault = false;
 
-   if (tempSettings.units === "M") type = "M";
-   else if (tempSettings.units === "S") type = "S";
-   else if (tempSettings.units === "I") type = "I";
-
-   if (type === tempSettings.units) isDefault = true;
+   if (tempSettings.units === value) isDefault = true;
 
    return (
       <>
@@ -28,7 +23,9 @@ export default function UnitSettings({
                name="settings_Units"
                id={`settings_Units_${id}`}
                value={value}
-               onChange={() => setTempSettings({ ...tempSettings, units: value })}
+               onChange={() =>
+                  setTempSettings((curr) => ({ ...curr, units: value }))
+               }
                defaultChecked
             />
          ) : (
@@ -38,7 +35,9 @@ export default function UnitSettings({
                name="settings_Units"
                id={`settings_Units_${id}`}
                value={value}
-               onChange={() => setTempSettings({ ...tempSettings, units: value })}
+               onChange={() =>
+                  setTempSettings((curr) => ({ ...curr, units: value }))
+               }
             />
          )}
       </>
